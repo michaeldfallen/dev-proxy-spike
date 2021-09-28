@@ -1,0 +1,17 @@
+version: "2"
+
+services:
+  whoishe:
+    build: ../app
+    expose:
+      - "5000"
+    external_links:
+      - "nginx-proxy:localhost.coffeepowered.xyz"
+    environment:
+      - VIRTUAL_HOST=bar.dev.coffeepowered.xyz
+      - VIRTUAL_PORT=5000
+
+networks:
+  default:
+    external:
+      name: dev-proxy

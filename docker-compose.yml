@@ -1,0 +1,26 @@
+version: "2"
+
+services:
+  nginx-proxy:
+    build: ./
+    ports:
+      - "80:80"
+    environment:
+      - DEFAULT_HOST=coffeepowered.xyz
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  whoami:
+    image: jwilder/whoami
+    expose:
+      - "8000"
+    links:
+      - "nginx-proxy:localhost.coffeepowered.xyz"
+    environment:
+      - VIRTUAL_HOST=foo.dev.coffeepowered.xyz
+      - VIRTUAL_PORT=8000
+
+networks:
+  default:
+    external:
+      name: dev-proxy
