@@ -1,0 +1,78 @@
+{
+  "name": "@the/dev-proxy",
+  "version": "1.0.0",
+  "description": "Docker-based dynamic proxy",
+  "author": "Michael Allen (michael.allen@timeshighereducation.com)",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "run-s clean build:*",
+    "build:docker": "docker build -t dev-proxy:dev ./docker",
+    "build:tsc": "tsc",
+    "watch": "tsc -p tsconfig.json --watch",
+    "prepare": "run-p prepare:*",
+    "prepare:husky": "husky install",
+    "lint": "run-p lint:*",
+    "lint:eslint": "eslint --cache .",
+    "lint:tsc": "tsc -p tsconfig.json --noEmit",
+    "lint:prettier": "prettier --check .",
+    "format": "run-s format:*",
+    "format:eslint": "eslint --cache --fix .",
+    "format:prettier": "prettier --write ."
+  },
+  "bin": {
+    "dev-proxy": "./bin/dev-proxy"
+  },
+  "eslintConfig": {
+    "extends": "@the/collections",
+    "env": {
+      "node": true
+    },
+    "ignorePatterns": [
+      "dist"
+    ],
+    "settings": {
+      "jest": {
+        "version": 26
+      }
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "quoteProps": "as-needed",
+    "bracketSpacing": true,
+    "arrowParens": "always"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "bash -c 'tsc -p tsconfig.json --noEmit'",
+      "prettier --write",
+      "eslint --cache --fix --max-warnings=0"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@types/dockerode": "^3.3.0",
+    "commander": "^8.3.0",
+    "dockerode": "^3.3.1",
+    "ora": "^5.4.0",
+    "typescript": "^4.5.4"
+  },
+  "devDependencies": {
+    "@the/eslint-config-collections": "^1.0.0",
+    "eslint": "^7.32.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2"
+  }
+}
